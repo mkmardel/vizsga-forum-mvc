@@ -1,0 +1,20 @@
+{% extends 'layout.twig' %} {% block content %}
+<h3>{{ title }}</h3>
+<div class="row">
+	{% for user in users %}
+		<div class="card shadow-sm my-3">
+			<div class="card-body">
+				<div class="card-title">
+					<strong><i class="fa fa-id-card-o"></i>&nbsp;&nbsp;{{ user.name }}</strong>
+				</div>
+				<div class="btn-group mt-2" role="group"  style="margin-left: -9px;">
+					<a class="btn text-success btn-sm {% if user.role == 'admin' %} disabled {% endif %}" href="index.php?controller=user&action=details&id={{ user.id }}"><i class="fa fa-pencil-square-o"></i>&nbsp;&nbsp;Szerkesztés</a>
+					<a class="btn text-danger btn-sm {% if user.role == 'admin' %} disabled {% endif %}"
+					href="index.php?controller=user&action=delete&id={{ user.id }}"
+					onclick="return confirm('Biztos törölni szeretnéd a felhasználót?')"><i class="fa fa-trash-o"></i>&nbsp;&nbsp;Törlés</a>
+				</div>
+			</div>
+		</div>
+	{% endfor %}
+</div>
+{% endblock %}

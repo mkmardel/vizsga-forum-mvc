@@ -1,0 +1,28 @@
+{% extends 'layout.twig' %} {% block content %}
+<h3>{{ title }}</h3>
+<div class="row mt-4">
+	<a class="btn btn-warning  {% if session.logged_in == false %} disabled {% endif %}" href="index.php?controller=post&action=new&category={{ category.id }}"><i class="fa fa-plus"></i>&nbsp;&nbsp;Új hozzászólás</a>
+</div>
+<div class="row">
+	{% for post in posts %}
+		<div class="card shadow-sm my-3">
+			<div class="card-body">
+				<div class="card-title">
+					<strong><i class="fa fa-user-circle-o"></i>&nbsp;&nbsp;{{ post.name }}</strong>
+				</div>
+				<div class="card-title">
+					{{ post.content }}
+				</div>
+				{% if (post.user_id == session.user_id) or (session.user_role == 'admin') %}
+					<div class="btn-group mt-2" role="group" style="margin-left: -9px;">
+						<a class="btn text-success btn-sm" href="index.php?controller=post&action=details&category={{ category.id }}&id={{ post.id }}"><i class="fa fa-pencil-square-o"></i>&nbsp;&nbsp;Szerkesztés</a>
+						<a class="btn text-danger btn-sm"
+						href="index.php?controller=post&action=delete&category={{ category.id }}&id={{ post.id }}"
+						onclick="return confirm('Biztos törölni szeretnéd a hozzászólást?')"><i class="fa fa-trash-o"></i>&nbsp;&nbsp;Törlés</a>
+					</div>
+				{% endif %}
+			</div>
+		</div>
+	{% endfor %}
+</div>
+{% endblock %}

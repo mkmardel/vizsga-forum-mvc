@@ -1,0 +1,18 @@
+{% extends 'layout.twig' %} {% block content %}
+<h3>{{ title }}</h3>
+<div class="row mt-4">
+	<a class="btn btn-warning {% if session.user_role != 'admin' %} disabled {% endif %}" href="index.php?controller=category&action=new"><i class="fa fa-plus"></i>&nbsp;&nbsp;Új kategória</a>
+</div>
+<div class="row">
+	{% for category in categories %}
+		<div class="card shadow-sm my-3">
+			<div class="card-body">
+				<div class="card-title">
+					<strong><i class="fa fa-align-right"></i>&nbsp;&nbsp;{{ category.name }}</strong>
+				</div>
+				<a class="btn btn-secondary btn-sm mt-2" href="index.php?controller=category&action=posts&id={{ category.id }}"><i class="fa fa-comments-o"></i>&nbsp;&nbsp;Hozzászólások</a>
+			</div>
+		</div>
+	{% endfor %}
+</div>
+{% endblock %}

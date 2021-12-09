@@ -1,0 +1,37 @@
+{%block header %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="index.php">Vizsga Fórum</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" href="index.php"><i class="fa fa-list"></i>&nbsp;Kategóriák</a>
+      </li>
+      {% if session.logged_in %}
+        <li class="nav-item">
+          <a class="nav-link" href="index.php?controller=user&action=details&id={{ session.user_id }}"><i class="fa fa-id-card"></i>&nbsp;Profilom</a>
+        </li>
+        {% if session.user_role == 'admin' %}
+          <li class="nav-item">
+            <a class="nav-link" href="index.php?controller=user&action=index"><i class="fa fa-users"></i>&nbsp;Felhasználók</a>
+          </li>
+        {% endif %}
+        <li class="nav-item">
+          <a class="nav-link" href="index.php?controller=user&action=logout"><i class="fa fa-sign-out"></i>&nbsp;Kijelentkezés</a>
+        </li>
+      {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="index.php?controller=user&action=login"><i class="fa fa-sign-in"></i>&nbsp;Bejelentkezés</a>
+        </li>
+        <li class="nav-item text-right">
+          <a class="nav-link" href="index.php?controller=user&action=registration"><i class="fa fa-user-plus"></i>&nbsp;Regisztráció</a>
+        </li>
+      {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>
+{% endblock %}

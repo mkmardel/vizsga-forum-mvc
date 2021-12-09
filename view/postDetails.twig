@@ -1,0 +1,14 @@
+{% extends 'layout.twig' %} {% block content %}
+<h3>{{ title }}</h3>
+<div class="row mt-4">
+	<form method="post" action="index.php?controller=post&action=update">
+        <div class="mb-3">
+            <input type="hidden" name="id" value="{{ post.id }}"/>
+            <input type="hidden" name="category" value="{{ category }}"/>
+            <label class="form-label">Hozzászólás</label>
+            <textarea required class="form-control" name="content">{{ post.content }}</textarea>
+        </div>
+        <button type="submit" name="submit" class="btn btn-primary"><i class="fa fa-check"></i>&nbsp;&nbsp;Módosít</button>
+    </form>
+</div>
+{% endblock %}

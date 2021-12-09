@@ -1,0 +1,18 @@
+{% extends 'layout.twig' %} {% block content %}
+<h3>{{ title }}</h3>
+<div class="row mt-4">
+	<form method="post" action="index.php?controller=user&action=update">
+        <input type="hidden" name="id" value="{{ user.id }}">
+        <input type="hidden" name="email" value="{{ user.email }}">
+
+        <div class="mb-3">
+            <label class="form-label">Név</label>
+            <input type="text" required class="form-control" name="name" value="{{ user.name }}">
+        </div>
+        <div class="mb-3">
+            <strong>Regisztrált e-mail cím: </strong>{{ user.email }}<br>
+
+        </div>
+        <button type="submit" name="submit" class="btn btn-primary"><i class="fa fa-check"></i>&nbsp;&nbsp;Módosítás</button>
+</div>
+{% endblock %}

@@ -40,7 +40,7 @@ class Post extends General
         if (mb_strlen($content) > 0 && mb_strlen($content) <= 100) {
             $this->content = filter_var($content, FILTER_SANITIZE_SPECIAL_CHARS);
         } else {
-            $this->errors[] = 'Content can be up to 100 characters.';
+            $this->errors[] = 'A hozzászólás nem lehet több 100 karakternél.';
         }
     }
 
@@ -138,19 +138,21 @@ class Post extends General
     public function update()
     {
         if ($this->userCanEdit()) {
-            $query = $this->connection->prepare(
-                'UPDATE ' . $this->table .
-                    ' SET
-                    content = :content 
-                    WHERE id = :id'
-            );
+            if (empty($this->errors)) {
+                $query = $this->connection->prepare(
+                    'UPDATE ' . $this->table .
+                        ' SET
+                        content = :content 
+                        WHERE id = :id'
+                );
 
-            $result = $query->execute(array(
-                'content' => $this->content,
-                'id' => $this->id
-            ));
-            $this->connection = null;
-            return $result;
+                $result = $query->execute(array(
+                    'content' => $this->content,
+                    'id' => $this->id
+                ));
+                $this->connection = null;
+                return $result;
+            }
         } else {
             $this->errors[] = 'A hozzászólás 5 perc után nem módosítható.';
         }

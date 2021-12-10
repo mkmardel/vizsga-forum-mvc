@@ -79,12 +79,13 @@ class PostController extends GeneralController
 
     private function details()
     {
+        $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
         $post = new Post($this->connection);
-        $result = $post->getById(filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT));
+        $result = $post->getById($id);
         echo $this->twig->render('postDetails.twig', array(
             "post" => $result,
             "category" => filter_input(INPUT_GET, 'category'),
-            "title" => "Poszt részletei"
+            "title" => "Hozzászólás részletei"
         ));
     }
 
@@ -94,7 +95,7 @@ class PostController extends GeneralController
         $this->setProperties('post', $post);
         $post->update();
         if (!empty($post->getErrors())) {
-            $this->redirectWithErrors($post);
+            $this->redirectWithErrors($post, 'update');
         } else {
             header("Location:index.php?controller=category&action=posts&id=" . $post->getCategoryId());
         }
@@ -106,22 +107,38 @@ class PostController extends GeneralController
         $this->setProperties('get', $post);
         $post->delete();
         if (!empty($post->getErrors())) {
-            $this->redirectWithErrors($post);
+            $this->redirectWithErrors($post, 'delete');
         } else {
             header("Location:index.php?controller=category&action=posts&id=" . $post->getCategoryId());
         }
     }
 
-    private function redirectWithErrors(Post $post){
+    /**
+     * Redirects with error message
+     * @param Post $post
+     * @param string $action 'update' / 'delete'
+     */
+    private function redirectWithErrors(Post $post, $action)
+    {
         $posts = $post->getAllWithUsername($post->getCategoryId());
         $category = new Category($this->connection);
         $category = $category->getById($post->getCategoryId());
-        echo $this->twig->render('categoryPosts.twig', array(
-            "errors" => $post->getErrors(),
-            "posts" => $posts,
-            "category" => $category,
-            "title" => "Poszt részletei"
-        ));
+        if ($action == 'delete') {
+            echo $this->twig->render('categoryPosts.twig', array(
+                "errors" => $post->getErrors(),
+                "posts" => $posts,
+                "category" => $category,
+                "title" => "Hozzászólás részletei"
+            ));
+        }
+        if ($action == 'update') {
+            echo $this->twig->render('postDetails.twig', array(
+                "errors" => $post->getErrors(),
+                "post" => $post,
+                "category" => $post->getCategoryId(),
+                "title" => "Hozzászólás részletei"
+            ));
+        }
     }
 
     public function view($view)

@@ -40,7 +40,6 @@ class CategoryController extends GeneralController
 
     private function create()
     {
-
         $category = new Category($this->connection);
         $this->setProperties($category);
         $category->create();

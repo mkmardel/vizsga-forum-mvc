@@ -96,16 +96,18 @@ class User extends General
     public function create()
     {
         if ($this->emailIsUnique()) {
-            $hashPassword = Bcrypt::hashPassword($this->password);
-            $query = $this->connection->prepare('INSERT INTO ' . $this->table . ' (name, email, password, role) VALUES (:name, :email, :password, :role)');
-            $result = $query->execute(array(
-                'name' => $this->name,
-                'email' => $this->email,
-                'password' => $hashPassword,
-                'role' => $this->role,
-            ));
-            $this->connection = null;
-            return $result;
+            if (empty($this->errors)) {
+                $hashPassword = Bcrypt::hashPassword($this->password);
+                $query = $this->connection->prepare('INSERT INTO ' . $this->table . ' (name, email, password, role) VALUES (:name, :email, :password, :role)');
+                $result = $query->execute(array(
+                    'name' => $this->name,
+                    'email' => $this->email,
+                    'password' => $hashPassword,
+                    'role' => $this->role,
+                ));
+                $this->connection = null;
+                return $result;
+            }
         } else {
             $this->errors[] = 'Az megadott email cím már regisztrálva van.';
             return false;

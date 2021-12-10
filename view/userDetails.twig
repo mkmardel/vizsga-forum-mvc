@@ -1,5 +1,9 @@
 {% extends 'layout.twig' %} {% block content %}
 <h3>{{ title }}</h3>
+{% if session.user_role == 'admin' %}
+<a class="text-decoration-none text-muted" href="index.php?controller=user&action=list"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Felhasználók<a>
+{% endif %}
+<hr>
 <div class="row mt-4">
 	<form method="post" action="index.php?controller=user&action=update">
         <input type="hidden" name="id" value="{{ user.id }}">

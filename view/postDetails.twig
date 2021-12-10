@@ -1,5 +1,7 @@
 {% extends 'layout.twig' %} {% block content %}
 <h3>{{ title }}</h3>
+<a class="text-decoration-none text-muted" href="index.php?controller=category&action=posts&id={{ category }}"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Hozzászólások<a>
+<hr>
 <div class="row mt-4">
 	<form method="post" action="index.php?controller=post&action=update">
         <div class="mb-3">

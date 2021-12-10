@@ -43,12 +43,14 @@ class Category extends General
     public function create()
     {
         if ($this->categoryIsUnique()) {
-            $query = $this->connection->prepare('INSERT INTO ' . $this->table . ' (name) VALUES (:name)');
-            $result = $query->execute(array(
-                'name' => $this->name,
-            ));
-            $this->connection = null;
-            return $result;
+            if (empty($this->errors)) {
+                $query = $this->connection->prepare('INSERT INTO ' . $this->table . ' (name) VALUES (:name)');
+                $result = $query->execute(array(
+                    'name' => $this->name,
+                ));
+                $this->connection = null;
+                return $result;
+            }
         } else {
             $this->errors[] = 'Ez a kategória már létezik.';
             return false;
